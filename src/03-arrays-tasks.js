@@ -144,11 +144,9 @@ function getStringsLength(arr) {
  *    [ 1, 'b', 'c'], 'x', 0  => [ 'x', 1, 'b', 'c' ]
  */
 function insertItem(arr, item, index) {
-  return arr.flatMap((element, elementIndex) =>
-    index === elementIndex
-      ? [item, element]
-      : [element]
-  );
+  return arr.flatMap((element, elementIndex) => (index === elementIndex
+    ? [item, element]
+    : [element]));
 }
 
 /**
@@ -200,9 +198,7 @@ function getTail(arr, n) {
  *    +'30,31,32,33,34'
  */
 function toCsvText(arr) {
-  return arr.reduce((prev, current, index) => {
-    return prev + current.join(',') + (index !== arr.length - 1 ? '\n' : '');
-  }, '');
+  return arr.reduce((prev, current, index) => prev + current.join(',') + (index !== arr.length - 1 ? '\n' : ''), '');
 }
 
 /**
@@ -274,9 +270,7 @@ function getSecondItems(arr) {
  *  [ 1,2,3,4,5 ] => [ 1, 2,2, 3,3,3, 4,4,4,4, 5,5,5,5,5 ]
  */
 function propagateItemsByPositionIndex(arr) {
-  return arr.flatMap((element, index) => {
-    return Array.from({ length: index + 1 }).fill(element);
-  });
+  return arr.flatMap((element, index) => Array.from({ length: index + 1 }).fill(element));
 }
 
 /**
@@ -311,9 +305,7 @@ function get3TopItems(arr) {
  *   [ 1, '2' ] => 1
  */
 function getPositivesCount(arr) {
-  return arr.reduce((prev, cur) => {
-    return prev + (cur > 0 && typeof cur === 'number' ? 1 : 0);
-  }, 0);
+  return arr.reduce((prev, cur) => prev + (cur > 0 && typeof cur === 'number' ? 1 : 0), 0);
 }
 
 /**
@@ -359,9 +351,7 @@ function sortDigitNamesByNumericOrder(arr) {
  *   [ 1, 10, 100, 1000 ]  => 1111
  */
 function getItemsSum(arr) {
-  return arr.reduce((prev, current) => {
-    return prev + current;
-  }, 0);
+  return arr.reduce((prev, current) => prev + current, 0);
 }
 
 /**
@@ -377,9 +367,7 @@ function getItemsSum(arr) {
  *  [ null, undefined, NaN, false, 0, '' ]  => 6
  */
 function getFalsyValuesCount(arr) {
-  return arr.reduce((prev, current) => {
-    return prev + (!current ? 1 : 0);
-  }, 0);
+  return arr.reduce((prev, current) => prev + (!current ? 1 : 0), 0);
 }
 
 /**
@@ -397,9 +385,7 @@ function getFalsyValuesCount(arr) {
  *    [ true, 0, 1, 'true' ], true => 1
  */
 function findAllOccurrences(arr, item) {
-  return arr.reduce((prev, current) => {
-    return prev + (item === current ? 1 : 0);
-  }, 0);
+  return arr.reduce((prev, current) => prev + (item === current ? 1 : 0), 0);
 }
 
 /**
@@ -482,14 +468,12 @@ function sortCitiesArray(arr) {
 function getIdentityMatrix(n) {
   const matrix = Array.from({ length: n });
 
-  return matrix.map((_, i) => {
-    return Array.from({ length: n })
-      .fill(0)
-      .map((matrixElement, j) => {
-        if (i === j) return 1;
-        return matrixElement;
-      });
-  });
+  return matrix.map((_, i) => Array.from({ length: n })
+    .fill(0)
+    .map((matrixElement, j) => {
+      if (i === j) return 1;
+      return matrixElement;
+    }));
 }
 
 /**
@@ -506,9 +490,9 @@ function getIdentityMatrix(n) {
  *     3, 3   => [ 3 ]
  */
 function getIntervalArray(start, end) {
-  const result = Array.from({ length: end - start + 1});
+  const result = Array.from({ length: end - start + 1 });
 
-  return result.map((_, i) => i + start)
+  return result.map((_, i) => i + start);
 }
 
 /**
@@ -562,8 +546,7 @@ function group(array, keySelector, valueSelector) {
   return array.reduce((prev, current) => {
     const valueByKeySelector = prev.get(keySelector(current));
 
-    if (!valueByKeySelector)
-      return prev.set(keySelector(current), [valueSelector(current)]);
+    if (!valueByKeySelector) { return prev.set(keySelector(current), [valueSelector(current)]); }
 
     return prev.set(keySelector(current), [
       ...valueByKeySelector,
@@ -602,9 +585,7 @@ function selectMany(arr, childrenSelector) {
  *   [[[ 1, 2, 3]]], [ 0, 0, 1 ]      => 2        (arr[0][0][1])
  */
 function getElementByIndexes(arr, indexes) {
-  return indexes.reduce((prev, current) => {
-    return prev[current]
-  }, arr)
+  return indexes.reduce((prev, current) => prev[current], arr);
 }
 
 /**
