@@ -36,5 +36,3 @@ node_modules
 # Editors crap
 .vscode
 .idea
-
-.index.js

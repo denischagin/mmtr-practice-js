@@ -108,12 +108,15 @@ function memoize(func) {
  * retryer() => 2
  */
 function retry(func, attempts) {
-  let count = 0;
-
   return () => {
-    if (count >= attempts) return;
-    count++;
-    return func();
+    for (let i = 0; i < attempts; i++) {
+      try {
+        return func()
+      }
+      catch (e) {
+        continue
+      }
+    }
   };
 }
 
@@ -140,15 +143,20 @@ function retry(func, attempts) {
  * cos(3.141592653589793) ends
  *
  */
-function logger(func, logFunc) {
+function logger(func, logFunc = console.log) {
   const valuesToString = (values) => {
     return values.map((element) => JSON.stringify(element)).join(',')
   }  
 
   return (...values) => {
+    // logFunc('  ')
+    // logFunc('-----')
+
     logFunc(`${func.name}(${valuesToString(values)}) starts`);
     const funcResult = func(...values) 
     logFunc(`${func.name}(${valuesToString(values)}) ends`);
+
+    // logFunc(`--- ${JSON.stringify(funcResult)} ---`)
 
     return funcResult
   };

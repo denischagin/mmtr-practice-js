@@ -132,13 +132,15 @@ function isTriangle(a, b, c) {
  *
  */
 function doRectanglesOverlap(rect1, rect2) {
-  // if (rect1.left + rect1.width < rect2.left || rect2.left + rect2.width < rect1.left) {
-  //   return false; // Прямоугольники не пересекаются по горизонтали
-  // }
-  // if (rect1.top - rect1.height > rect2.top || rect2.top - rect2.height > rect1.top) {
-  //   return false; // Прямоугольники не пересекаются по вертикали
-  // }
-  // return true;
+  const overlapX =
+    rect1.left < rect2.left + rect2.width &&
+    rect1.left + rect1.width > rect2.left;
+
+  const overlapY =
+    rect1.top < rect2.top + rect2.height &&
+    rect1.top + rect1.height > rect2.top;
+
+  return overlapX && overlapY;
 }
 
 /**
@@ -298,18 +300,19 @@ function reverseInteger(num) {
  *   4916123456789012 => false
  */
 function isCreditCardNumber(number) {
-  var checksum = parseInt(number.charAt(number.length - 1));
-  var total = 0;
-  for (var i = number.length - 2; i >= 0; i--) {
-    var sum = 0;
-    var digit = parseInt(number.charAt(i));
-    if (i % 2 === 0) {
+  const str = number.toString();
+  let sum = 0;
+  for (let i = str.length - 1; i >= 0; i--) {
+    let digit = Number(str[i]);
+    if ((str.length - i) % 2 === 0) {
       digit *= 2;
+      if (digit > 9) {
+        digit -= 9;
+      }
     }
-    sum = Math.floor(digit / 10) + (digit % 10);
-    total += sum;
+    sum += digit;
   }
-  return 10 - (total % 10) === checksum;
+  return sum % 10 === 0;
 }
 
 /**
@@ -330,16 +333,16 @@ function getDigitalRoot(num) {
   let result = num;
 
   while (result > 9) {
-    result = 0
+    result = 0;
     while (num !== 0) {
       const digit = num % 10;
       result += digit;
       num = Math.floor(num / 10);
     }
-    num = result
+    num = result;
   }
 
-  return result
+  return result;
 }
 
 /**
@@ -422,8 +425,21 @@ function toNaryString(num, n) {
  *   ['/web/favicon.ico', '/web-scripts/dump', '/verbalizer/logs'] => '/'
  */
 function getCommonDirectoryPath(pathes) {
-  throw new Error("")
-  // pathes.split()
+  let result = [];
+
+  const arrayPaths = pathes.map((el) => el.split(/(\/)/));
+
+  for (let i = 0; i < arrayPaths[0].length; i++) {
+    result.push(arrayPaths[0][i]);
+    for (let j = 1; j < pathes.length; j++) {
+      if (arrayPaths[j][result.length - 1] !== result.at(-1)) {
+        result.pop();
+        return result.join('');
+      }
+    }
+  }
+
+  return result.join('');
 }
 
 /**
@@ -444,8 +460,25 @@ function getCommonDirectoryPath(pathes) {
  *                         [ 6 ]]
  *
  */
-function getMatrixProduct(/* m1, m2 */) {
-  throw new Error('Not implemented');
+function getMatrixProduct(m1, m2) {
+  const resM = [];
+
+  for (let i = 0; i < m1.length; i++) {
+    const row = [];
+    for (let j = 0; j < m2[i].length; j++) {
+      let sum = 0;
+
+      for (let k = 0; k < m1[i].length; k++) {
+        const elementM1 = m1[i][k];
+        const elementM2 = m2[k][j];
+        sum += elementM1 * elementM2;
+      }
+      row.push(sum);
+    }
+    resM.push(row);
+  }
+
+  return resM;
 }
 
 /**
@@ -478,8 +511,37 @@ function getMatrixProduct(/* m1, m2 */) {
  *    [    ,   ,    ]]
  *
  */
-function evaluateTicTacToePosition(/* position */) {
-  throw new Error('Not implemented');
+function evaluateTicTacToePosition(position) {
+  const tttDiagonal = { X: 0, 0: 0 };
+  const tttDiagonalReverse = { X: 0, 0: 0 };
+
+  for (let i = 0; i < 3; i++) {
+    const tttRow = { X: 0, 0: 0 };
+    const tttColumn = { X: 0, 0: 0 };
+
+    for (let j = 0; j < 3; j++) {
+      if (i === 0) {
+        tttDiagonal[position[j][j]] += 1;
+        tttDiagonalReverse[position[j][2 - j]] += 1;
+      }
+      tttRow[position[i][j]] += 1;
+      tttColumn[position[j][i]] += 1;
+    }
+    if (
+      tttRow['X'] === 3 ||
+      tttColumn['X'] === 3 ||
+      tttDiagonal['X'] === 3 ||
+      tttDiagonalReverse['X'] === 3
+    )
+      return 'X';
+    if (
+      tttRow['0'] === 3 ||
+      tttColumn['0'] === 3 ||
+      tttDiagonal['0'] === 3 ||
+      tttDiagonalReverse['0'] === 3
+    )
+      return '0';
+  }
 }
 
 module.exports = {
